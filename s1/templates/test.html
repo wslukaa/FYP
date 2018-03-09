@@ -1,0 +1,75 @@
+{% block body %}
+ 
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+  <div align="left">
+  <h1>list of samples</h1>
+  </div>
+  
+  <div align="center">
+  <h1>tag_name: {{tag_name}}</h1>
+  <h2>ht_name: {{ht_name}}</h2>
+  <h2>ts_start: {{ts_start}}</h2>
+  <h2>isTrend: {{isTrend}}</h2>
+  
+	<table class="rows">
+      
+    <tr><div id="chart_df_raw"  style="width: 900px; height: 300px;"></div></tr>
+    <tr><div id="chart_df_nor"  style="width: 900px; height: 300px;"></div></tr>
+	<tr><div id="chart_df_em"  style="width: 900px; height: 300px;"></div></tr>
+	<tr><div id="chart_df_smoothed"  style="width: 900px; height: 300px;"></div></tr>
+    </table>
+ </div>
+ 
+<script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+		var data_df_raw = google.visualization.arrayToDataTable(
+			  {{df_raw|tojson}}
+			);
+        var options_df_raw = {
+          title: 'df_raw',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+        var chart_df_raw = new google.visualization.LineChart(document.getElementById('chart_df_raw'));
+        chart_df_raw.draw(data_df_raw, options_df_raw);
+		
+		var data_df_nor = google.visualization.arrayToDataTable(
+			  {{df_nor|tojson}}
+			);
+        var options_df_nor = {
+          title: 'df_nor',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+        var chart_df_nor = new google.visualization.LineChart(document.getElementById('chart_df_nor'));
+        chart_df_nor.draw(data_df_nor, options_df_nor)	;
+		
+		var data_df_em = google.visualization.arrayToDataTable(
+			  {{df_em|tojson}}
+			);
+        var options_df_em = {
+          title: 'df_em',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+        var chart_df_em = new google.visualization.LineChart(document.getElementById('chart_df_em'));
+        chart_df_em.draw(data_df_em, options_df_em)	;
+		
+		var data_df_smoothed = google.visualization.arrayToDataTable(
+			  {{df_smoothed|tojson}}
+			);
+        var options_df_smoothed = {
+          title: 'df_smoothed',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+        var chart_df_smoothed = new google.visualization.LineChart(document.getElementById('chart_df_smoothed'));
+        chart_df_smoothed.draw(data_df_smoothed, options_df_smoothed)	;
+		
+      }
+    </script> 
+ 
+{% endblock %}
