@@ -4,7 +4,28 @@
   
   <div align="left">
   <h1>list of samples</h1>
+  <div id="menu">
+    
   </div>
+  </div>
+
+  <script type="text/javascript">
+    function render_menu(){
+    var list_of_samples = {{list_of_samples|tojson}};
+    var text = "";
+    
+    //s += '<tr><a href="tag/{}">'.format(k) + '</a></tr>'
+
+    for (var key in list_of_samples) {
+      // check if the property/key is defined in the object itself, not in parent
+      if (list_of_samples.hasOwnProperty(key)) {           
+          text += 'isTrend: ' + list_of_samples[key]['isTrend'] + ' <a href="/tag/' + key + '">' + list_of_samples[key]['tag_name'] + '</a><br>'
+      }
+    }
+    document.getElementById("menu").innerHTML = text;
+    }
+    render_menu();
+  </script>
   
   <div align="center">
   <h1>tag_name: {{tag_name}}</h1>
