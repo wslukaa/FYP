@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<h1>Twitter's Trend Prediction Tool </h1>
+	<a href = "/summary"> A brief summary here</a>
+</head>
+<body>
+
+<p> Please input the hashtag name and the datetime for a search! </p>
+
+
+
+<form action = "http://localhost:8080/search/result" method = "GET">
+    Hash Tag: 
+    <input name="ht_name" type="text" required>
+    <font color="red"> (required) </font>
+    <font id="htMessage" color="red"></font>    <br><br>
+
+    Start Time
+    <input name="ts_start" type="text"> <br>
+
+    <input type = "submit" value = "Submit">
+</form>
+
+
+
+
+<script>
+/*function searchHandler() {
+    var inpObj = document.getElementById("ht_name");
+    if (!inpObj.checkValidity()) {
+        document.getElementById("htMessage").innerHTML = inpObj.validationMessage;
+    }
+    else {
+        document.getElementById("htMessage").innerHTML = "Input OK";
+    } */
+} 
+</script>
+
+</body>
+</html>
