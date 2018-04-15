@@ -6,47 +6,52 @@
   <title>Pure CSS3 Menu</title>
   <link href="{{ url_for('static', filename='style.css')}}" media="screen" rel="stylesheet" type="text/css"  />
   <link href="{{url_for('static', filename='iconic.css')}}" media="screen" rel="stylesheet" type="text/css" />
-  <script src="prefix-free.js"></script>
+  <script src="{{url_for('static', filename='prefix-free.js')}}"></script>
 </head>
   
+<div class="wrap">
+<nav>
+  <ul class="menu">
+    <li><a href="#"><span class="iconic home"></span> Home (Summary)</a></li>
+    <li><a href="#"><span class="iconic plus-alt"></span> About Us</a>
+      <ul>
+        <li><a href="#">Meet the team</a></li>
+      </ul>
+    </li>
+    <li><a href="#"><span class="iconic magnifying-glass"></span> Search</a>
+      <ul>
+        <li><a href="/select">Select Search</a></li>
+        <li><a href="/direct">Direct Search (Advanced)</a></li>
+        <!--<li><a href="#">Email Campaigns</a></li>
+        <li><a href="#">Copyrighting</a></li>-->
+      </ul>
+    </li>
+    <!--<li><a href="#"><span class="iconic map-pin"></span> Products</a>
+      <ul>
+        <li><a href="#">Widget One</a></li>
+        <li><a href="#">Widget Two</a></li>
+        <li><a href="#">Web App Three</a></li>
+        <li><a href="#">Web App Four</a></li>
+        <li><a href="#">Crazy Products</a></li>
+        <li><a href="#">iPhone Apps</a></li>
+      </ul>
+    </li>
+    <li><a href="#"><span class="iconic mail"></span> Contact</a>
+      <ul>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Directions</a></li>
+      </ul>
+    </li>-->
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+</div>
+
+
+
+
+
 <body>
-  <div class="wrap">
-  <nav>
-    <ul class="menu">
-      <li><a href="#"><span class="iconic home"></span> Home (Summary)</a></li>
-      <li><a href="#"><span class="iconic plus-alt"></span> About Us</a>
-        <ul>
-          <li><a href="#">Meet the team</a></li>
-        </ul>
-      </li>
-      <li><a href="#"><span class="iconic magnifying-glass"></span> Search</a>
-        <ul>
-          <li><a href="#">Select Search</a></li>
-          <li><a href="#">Direct Search (Advanced)</a></li>
-          <!--<li><a href="#">Email Campaigns</a></li>
-          <li><a href="#">Copyrighting</a></li>-->
-        </ul>
-      </li>
-      <!--<li><a href="#"><span class="iconic map-pin"></span> Products</a>
-        <ul>
-          <li><a href="#">Widget One</a></li>
-          <li><a href="#">Widget Two</a></li>
-          <li><a href="#">Web App Three</a></li>
-          <li><a href="#">Web App Four</a></li>
-          <li><a href="#">Crazy Products</a></li>
-          <li><a href="#">iPhone Apps</a></li>
-        </ul>
-      </li>
-      <li><a href="#"><span class="iconic mail"></span> Contact</a>
-        <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Directions</a></li>
-        </ul>
-      </li>-->
-    </ul>
-    <div class="clearfix"></div>
-  </nav>
-  </div>
   <div align="center">
     <p>Hash Tag &nbsp
       <input id="ht_name" type="text" required>
