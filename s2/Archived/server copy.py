@@ -2,27 +2,14 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 import os
 import json
 import re 
-from pymongo import MongoClient
-
-
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
-
 data = {}
-
-# use this part of code to enable mongo db connection 
-"""client = MongoClient("mongodb://localhost:27017")
-db = client['fyp']
-
-
-f = db.googleChart.find({}, {'_id':0})"""
-
-# use this one line and indent the for following block of code to read the txt 
 with open('raw_plus_preprocessed_multiple_3.txt') as f:
 	for line in f:
-		tag = json.loads(json.dumps(line))
+		tag = json.loads(line)
 		ht_name = tag['ht_name']
 		ts_start = tag['ts_start']
 		tag_name = ht_name + '-' + ts_start
@@ -113,12 +100,6 @@ def directSearch():
 @app.route("/select")
 def selectSearch():
 	return render_tag_list('_crypto-20180206-145600')
-
-@app.route("/cluster")
-def showCluster():
-	return render_template('cluster.html')
-
-
 
  
  
