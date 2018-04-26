@@ -59,12 +59,12 @@
     </p>
     Prediction Algorithm: 
     <select id="algorithm">
-      <option value="mlp">Mylti-layer Perceptron Nerual Network Model (with 11 hidden layers)</option>
+      <option value="mlp">Multi-layer Perceptron Nerual Network Model (with 11 hidden layers)</option>
       <option value="gnb">Gaussian Naive Bayes</option>
       <option value="gbc">Gradient Boosting Classifer</option>
       <option value="dtc">Decision Tree Classifier</option>
-      <option value="rf">Regularized linear models with Stochastic Gradient Descent(SGD)</option>
-      <option value="gp">Gaussian Process Regression</option>
+      <option value="rlm">Regularized linear models with Stochastic Gradient Descent(SGD)</option>
+      <option value="gpr">Gaussian Process Regression</option>
       <option value="tca">Two-Class AdaBoost boosting algorithm using AdaBoost-SAMME with decision trees</option>
       <option value="lrs">Logistic Regression</option>
       <option value="rfc">Random Forest Classifier - max depth = 15</option>
@@ -91,8 +91,8 @@
  
   <div align="center">
   <h2>Prediction Algorithm:</h2>  
-  <h2>{{algo_name}}</h2>
-  <h2>Algorithm's Average Accuracy: {{algo_acc}}</h2>
+  <h2 style="color:blue">{{algo_name}}</h2>
+  <!--<h2>Algorithm's Average Accuracy: {{algo_acc}}</h2>-->
   <h2>Algorithm's Average True Postive Rate: {{algo_tpr}}</h2>
   
 
@@ -192,8 +192,8 @@
 <script> var list_of_samples = {{list_of_samples|tojson}};</script>
 </body>
 <h2> some examples entries here</h2>
-<a href ="http://127.0.0.1:5000/isTrendPredict/gp_momlife-20171004-125800"> #momlife at 20171004-125800 using Gaussian Process Regression</a> <br>
-<a href ="http://127.0.0.1:5000/isTrendPredict/kn_bestboyband-20180112-153200"> #bestboyband at 20180112-153200 usnig KNN Regression </a>
+<a href ="http://127.0.0.1:5000/isTrendPredict/gnb_momlife-20171004-125800"> #momlife at 20171004-125800 using Gaussian Naive Bayes</a> <br>
+<a href ="http://127.0.0.1:5000/isTrendPredict/rfc_bestboyband-20180112-153200"> #bestboyband at 20180112-153200 usnig Random Forest Classifier </a>
 
 
 {% endblock %}
