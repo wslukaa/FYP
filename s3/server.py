@@ -149,6 +149,63 @@ def render_valueDefault():
 
 
 
+@app.route('/isTrendPredict/<algo_tag_name>')
+def render_trend(algo_tag_name):
+	classifierAlgor = {'mlp': ['Multi-layer Perceptron Nerual Network Model (with 11 hidden layers)', 0.94, 'Max_MLP_predict'], 'gnb':['Gaussian Naive Bayes', 0.93, 'Max_GaussianNB_predict'], 'gbc':['Gradient Boosting Classifer', 0.91, 'Max_GradientBoosting_predict'], 'dtc':['Decision Tree Classifier', 0.91, 'Max_DecisionTree_predict'], 'rlm':['Regularized linear models with Stochastic Gradient Descent(SGD)', 0.89, 'Max_SGD_predict'], 'tca':['Two-Class AdaBoost boosting algorithm using AdaBoost-SAMME with decision trees', 0.89, 'Max_AdaBoostDecisionTree_predict'], 'lrs':['Logistic Regression', 0.89, 'Max_LogisticRegression_predict'], 'rfc': ['Random Forest Classifier - max depth = 15', 0.88, 'Max_RandomForest_predict'], 'lsv':['Linear Support Vector Classifier', 0.86, 'Max_LinearSVC_predict'], 'pac': ['Passive Aggressive Classifier', 0.84, 'Max_PassiveAgressive_predict'], 'knc': ['K-neighbors classifier', 0.82, 'Max_KNeighbors_predict'], 'etc': ['Extra-trees classifier', 0.79, 'Max_ExtraTree_predict'], 'bkn':['Bagging + k-neighbors classifier', 0.77, 'Max_BaggingAndKNeighbours_predict'], 'gpc':['Gaussian process classifier', 0.75, 'Max_GaussianProcess_predict'], 'ncc': ['Nearest centroid Classifier', 0.63, 'Max_NearestCentroid_predict'], 'rcf' : ['Ridge Classifier', 0.52, 'Max_Ridge_predict'], 'bnb':['Bernoulli Navies Bayes', '0.44', 'Max_BernoulliNB_predict'], 'lpc':['Label Propagation classifier', 0.30, 'Max_LabelPropagation_predict'] }
+	algo = algo_tag_name[:3]
+	tag_name = algo_tag_name[3:]
+
+	algo_name = classifierAlgor[algo][0]
+	algo_tpr = classifierAlgor[algo][1]
+
+	ht_rmse = 0
+	actual = ''
+	predicte = 999
+
+	tag = data[tag_name]
+
+	with open('Trend_hashtag_json_key_value') as f:
+		lines = f.readlines()
+		for line in lines:
+			entry = json.loads(line)
+			if (entry['Topic'] == tag['ht_name'] and entry['Time'] == tag['ts_start']):
+				actual = entry['Trend']
+				predicted = entry[classifierAlgor[algo][2]]
+				if (predicted == '1000'):
+					predicted = '1000 (used as training set)'
+				break
+
+	list_of_samples = get_list_of_samples()
+
+	
+	ht_name = tag['ht_name']
+	ts_start = tag['ts_start']
+	tag_name = ht_name + '-' + ts_start
+	isTrend = tag['isTrend']
+	df_raw = [['timestamp', 'value']]
+	df_nor = [['timestamp', 'value']]
+	df_em = [['timestamp', 'value']]
+	df_smoothed = [['timestamp', 'value']]
+
+	ts_full = tag['ts_full']
+	_df_raw = tag['df_raw']
+	_df_nor = tag['df_nor']
+	_df_em = tag['df_em']
+	_df_smoothed = tag['df_smoothed']
+
+	for i in range(0,len(ts_full)):
+		df_raw.append([ts_full[i],_df_raw[i]])
+		df_nor.append([ts_full[i],_df_nor[i]])
+		df_em.append([ts_full[i],_df_em[i]])
+		df_smoothed.append([ts_full[i],_df_smoothed[i]])
+
+	return render_template('isTrendPredict.html',**locals())
+
+@app.route('/isTrendPredict')
+def render_tredDefault():
+	return render_trend('mlp_crypto-20180206-145600')
+
+
 @app.route("/")
 def index():
 	return render_template('summary2.html')
