@@ -60,6 +60,27 @@ def get_list_of_clusters1():
 		l[k]['isTrend'] = v['isTrend']
 	return l
 
+cluster2 = {}
+
+with open('clusterfyp_withpca_optimised_raw_plus_preprocessed_multiple_3.txt') as f:
+	for line in f:
+		tag = json.loads(line)
+		cluster_id = tag['cluster_id']
+		ts_start = tag['ts_start']
+		tag_name = cluster_id + '-' + ts_start
+		tag_name = re.sub('#','_',tag_name)
+		cluster2[tag_name] = tag
+#print(cluster2)
+		
+def get_list_of_clusters1():
+	l = {}
+	for k,v in cluster2.items():
+		tag_name = v['cluster_id'] + '-' + v['ts_start']
+		l[k] = {}
+		l[k]['tag_name'] = tag_name
+		l[k]['isTrend'] = v['isTrend']
+	return l
+
 
 def render_tag_list(tag_name):
 	list_of_samples = get_list_of_samples()
@@ -172,7 +193,7 @@ def render_valueDefault():
 
 @app.route('/isTrendPredict/<algo_tag_name>')
 def render_trend(algo_tag_name):
-	classifierAlgor = {'mlp': ['Multi-layer Perceptron Nerual Network Model (with 11 hidden layers)', 0.94, 'Max_MLP_predict'], 'gnb':['Gaussian Naive Bayes', 0.93, 'Max_GaussianNB_predict'], 'gbc':['Gradient Boosting Classifer', 0.91, 'Max_GradientBoosting_predict'], 'dtc':['Decision Tree Classifier', 0.91, 'Max_DecisionTree_predict'], 'rlm':['Regularized linear models with Stochastic Gradient Descent(SGD)', 0.89, 'Max_SGD_predict'], 'tca':['Two-Class AdaBoost boosting algorithm using AdaBoost-SAMME with decision trees', 0.89, 'Max_AdaBoostDecisionTree_predict'], 'lrs':['Logistic Regression', 0.89, 'Max_LogisticRegression_predict'], 'rfc': ['Random Forest Classifier - max depth = 15', 0.88, 'Max_RandomForest_predict'], 'lsv':['Linear Support Vector Classifier', 0.86, 'Max_LinearSVC_predict'], 'pac': ['Passive Aggressive Classifier', 0.84, 'Max_PassiveAgressive_predict'], 'knc': ['K-neighbors classifier', 0.82, 'Max_KNeighbors_predict'], 'etc': ['Extra-trees classifier', 0.79, 'Max_ExtraTree_predict'], 'bkn':['Bagging + k-neighbors classifier', 0.77, 'Max_BaggingAndKNeighbours_predict'], 'gpc':['Gaussian process classifier', 0.75, 'Max_GaussianProcess_predict'], 'ncc': ['Nearest centroid Classifier', 0.63, 'Max_NearestCentroid_predict'], 'rcf' : ['Ridge Classifier', 0.52, 'Max_Ridge_predict'], 'bnb':['Bernoulli Navies Bayes', '0.44', 'Max_BernoulliNB_predict'], 'lpc':['Label Propagation classifier', 0.30, 'Max_LabelPropagation_predict'] }
+	classifierAlgor = {'mlp': ['Multi-layer Perceptron Nerual Network Model (with 11 hidden layers)', 0.94, 'Max_MLP_predict'], 'gnb':['Gaussian Naive Bayes', 0.93, 'Max_GaussianNB_predict'], 'gbc':['Gradient Boosting Classifer', 0.91, 'Max_GradientBoosting_predict'], 'dtc':['Decision Tree Classifier', 0.91, 'Max_DecisionTree_predict'], 'rlm':['Regularized linear models with Stochastic Gradient Descent(SGD)', 0.89, 'Max_SGD_predict'], 'tca':['Two-Class AdaBoost boosting algorithm using AdaBoost-SAMME with decision trees', 0.89, 'Max_AdaBoostDecisionTree_predict'], 'lrs':['Logistic Regression', 0.89, 'Max_LogisticRegression_predict'], 'rfc': ['Random Forest Classifier - max depth = 15', 0.88, 'Max_RandomForest_predict'], 'lsv':['Linear Support Vector Classifier', 0.86, 'Max_LinearSVC_predict'], 'pac': ['Passive Aggressive Classifier', 0.84, 'Max_PassiveAgressive_predict'], 'knc': ['K-neighbors classifier', 0.82, 'Max_KNeighbors_predict'], 'etc': ['Extra-trees classifier', 0.79, 'Max_ExtraTree_predict'], 'bkn':['Bagging + k-neighbors classifier', 0.77, 'Max_BaggingAndKNeighbours_predict'], 'gpc':['Gaussian process classifier', 0.75, 'Max_GaussianProcess_predict'], 'ncc': ['Nearest centroid Classifier', 0.63, 'Max_NearestCentroid_predict'], 'rcf' : ['Ridge Classifier', 0.52, 'Max_Ridge_predict'], 'bnb':['Bernoulli Navies Bayes', 0.44, 'Max_BernoulliNB_predict'], 'lpc':['Label Propagation classifier', 0.30, 'Max_LabelPropagation_predict'] }
 	algo = algo_tag_name[:3]
 	tag_name = algo_tag_name[3:]
 
@@ -226,11 +247,62 @@ def render_trend(algo_tag_name):
 def render_tredDefault():
 	return render_trend('mlp_crypto-20180206-145600')
 
-@app.route('/clusterValuePredict/<tag_name>')
-def render_clusterValue(tag_name):
+@app.route('/clusterValuePredict/<algo_tag_name>')
+def render_clusterValue(algo_tag_name):
+	cluster = algo_tag_name[:2]
+	algo = algo_tag_name[2:4]
+	tag_name = algo_tag_name[4:]
+
+
+	if (cluster == 'c1'):
+		regressionAlgor = {'kr': ['Kernel Ridge Regression', 0.757763088, 7], 'dt':['Decision Tree Regression', 1.411528436, 8], 'kn':['KNN Regression', 1.29671941, 9], 'lp': ['MLP Regression', 1.188744197, 10], 'rf': ['Random Forest Regression',   1.261234171, 11], 'gp':['Gaussian process Regression', 321.2769986, 12], 'ls':['Linear Support Vector Regression', 0.744341231,13] }
+		filename = 'kmeansResult.json'
+		tag = cluster1[tag_name]
+	else: 
+		regressionAlgor = {'kr': ['Kernel Ridge Regression', 0.757763088, 7], 'dt':['Decision Tree Regression', 1.411528436, 8], 'kn':['KNN Regression', 1.29671941, 9], 'lp': ['MLP Regression', 1.188744197, 10], 'rf': ['Random Forest Regression',   1.261234171, 11], 'gp':['Gaussian process Regression', 321.2769986, 12], 'ls':['Linear Support Vector Regression', 0.744341231,13] }
+		filename = 'pcaResult.json'
+		tag = cluster2[tag_name]
+
+
+	algo_name = regressionAlgor[algo][0]
+	algo_rmse = regressionAlgor[algo][1]
+
+	ht_rmse = 2
+	clusterWords = []
+	
+
+	#print(tag['cluster_words'])
+	#print(tag['ts_start'])
+
+	with open(filename) as f:
+		lines = f.readlines()
+		for line in lines:
+			entry = json.loads(line)
+			#print(entry['cluster_id'])
+			#print(tag['cluster_words'])
+			#print(entry['ts_start']==tag['ts_start'])
+			
+
+			#flag = True
+			#for x in entry['cluster_id']:
+				#print(x)
+				#if x not in tag['cluster_words']:
+					#flag = False
+			
+			#print(flag)
+			#print( entry['ts_start'] == tag['ts_start'])
+			if ((entry['cluster_id']==tag['cluster_words']) and entry['ts_start'] == tag['ts_start']):
+				ht_rmse = entry[algo]
+				clusterWords = entry['cluster_id']
+				#print("rmse is input")
+				break
+
+
+
+
 	list_of_samples = get_list_of_clusters1()
 
-	tag = cluster1[tag_name]
+	
 	ht_name = tag['cluster_id']
 	ts_start = tag['ts_start']
 	tag_name = ht_name + '-' + ts_start
@@ -265,21 +337,35 @@ def render_clusterValueMenu():
 
 @app.route('/clusterValueInput/<algo_hashtag>')
 def render_clusterValueMenu2(algo_hashtag):
-	algo = algo_hashtag[:2]
-	hashtag = ' ' + algo_hashtag[3:].strip()
+	cluster = algo_hashtag[:2]
+	algo = algo_hashtag[2:4]
+	hashtag = ' ' + algo_hashtag[5:].strip()	
 
-	
+
 	list_of_samples = {}
+	if (cluster == 'c1'):
+		for k,v in cluster1.items():
+			#print(v['cluster_words'])
+			if(hashtag in v['cluster_words']):
+				tag_name = v['cluster_id'] + '-' + v['ts_start']
+				list_of_samples[k] = {}
+				list_of_samples[k]['tag_name'] = tag_name
+				list_of_samples[k]['isTrend'] = v['isTrend']
+		#print(hashtag)
+		#print(list_of_samples)
+	else:
+		#print('imhere')
+		#print(cluster2)
+		for k,v in cluster2.items():
+			print(v['cluster_words'])
+			if(hashtag in v['cluster_words']):
+				tag_name = v['cluster_id'] + '-' + v['ts_start']
+				list_of_samples[k] = {}
+				list_of_samples[k]['tag_name'] = tag_name
+				list_of_samples[k]['isTrend'] = v['isTrend']
+		#print(hashtag)
+		#print(list_of_samples)
 
-	for k,v in cluster1.items():
-		print(v['cluster_words'])
-		if(hashtag in v['cluster_words']):
-			tag_name = v['cluster_id'] + '-' + v['ts_start']
-			list_of_samples[k] = {}
-			list_of_samples[k]['tag_name'] = tag_name
-			list_of_samples[k]['isTrend'] = v['isTrend']
-	print(hashtag)
-	print(list_of_samples)
 
 
 	return render_template('clusterValueInput2.html', **locals())
@@ -291,31 +377,85 @@ def render_clusterIsTrendMenu():
 
 @app.route('/clusterIsTrendInput/<algo_hashtag>')
 def render_clusterIsTrendMenu2(algo_hashtag):
-	algo = algo_hashtag[:3]
-	hashtag = ' ' + algo_hashtag[4:].strip()
+	cluster = algo_hashtag[:2]
+	algo = algo_hashtag[2:5]
+	hashtag = ' ' + algo_hashtag[6:].strip()
 
 
 	
 	list_of_samples = {}
-	for k,v in cluster1.items():
-		print(v['cluster_words'])
-		if(hashtag in v['cluster_words']):
-			tag_name = v['cluster_id'] + '-' + v['ts_start']
-			list_of_samples[k] = {}
-			list_of_samples[k]['tag_name'] = tag_name
-			list_of_samples[k]['isTrend'] = v['isTrend']
-	print(hashtag)
-	print(list_of_samples)
+
+	if (cluster == 'c1'):
+		for k,v in cluster1.items():
+			#print(v['cluster_words'])
+			if(hashtag in v['cluster_words']):
+				tag_name = v['cluster_id'] + '-' + v['ts_start']
+				list_of_samples[k] = {}
+				list_of_samples[k]['tag_name'] = tag_name
+				list_of_samples[k]['isTrend'] = v['isTrend']
+		#print(hashtag)
+		#print(list_of_samples)
+	else:
+		#print('imhere')
+		#print(cluster2)
+		for k,v in cluster2.items():
+			print(v['cluster_words'])
+			if(hashtag in v['cluster_words']):
+				tag_name = v['cluster_id'] + '-' + v['ts_start']
+				list_of_samples[k] = {}
+				list_of_samples[k]['tag_name'] = tag_name
+				list_of_samples[k]['isTrend'] = v['isTrend']
+		#print(hashtag)
+		#print(list_of_samples)
+
 
 
 	return render_template('clusterIsTrendInput2.html', **locals())
 
 
-@app.route('/clusterIsTrendPredict/<tag_name>')
-def render_clusterIsTrned(tag_name):
+@app.route('/clusterIsTrendPredict/<algo_tag_name>')
+def render_clusterIsTrned(algo_tag_name):
+	
+	cluster = algo_tag_name[:2]
+	algo = algo_tag_name[2:5]
+	tag_name = algo_tag_name[5:]
+
+	if( cluster == 'c1'):
+		classifierAlgor = {'mlp': ['Multi-layer Perceptron Nerual Network Model (with 11 hidden layers)', 0.56, 'Max_MLP_predict'], 'gnb':['Gaussian Naive Bayes', 0.59, 'Max_GNB_predict'], 'gbc':['Gradient Boosting Classifer', 0.61, 'Max_GradientBoosting_predict'], 'dtc':['Decision Tree Classifier', 0.70, 'Max_DecisionTree_predict'], 'rlm':['Regularized linear models with Stochastic Gradient Descent(SGD)', 0.46, 'Max_SGD_predict'], 'tca':['Two-Class AdaBoost boosting algorithm using AdaBoost-SAMME with decision trees', 0.65, 'Max_AdaBoost_predict'], 'lrs':['Logistic Regression', 0.50, 'Max_Logistic_predict'], 'rfc': ['Random Forest Classifier - max depth = 15',0.50, 'Max_RandomForest_predict'], 'lsv':['Linear Support Vector Classifier', 0.53, 'Max_LinearSV_predict'], 'pac': ['Passive Aggressive Classifier', 0.53, 'Max_PassiveAggressive_predict'], 'knc': ['K-neighbors classifier', 0.42, 'Max_BaggingKN_predict'], 'etc': ['Extra-trees classifier', 0.36, 'Max_extraTree_predict'], 'bkn':['Bagging + k-neighbors classifier', 0.32, 'Max_BaggingKN_predict'], 'gpc':['Gaussian process classifier', 0.36, 'Max_GaussianProcess_predict'], 'ncc': ['Nearest centroid Classifier', 0.59, 'Max_NearestCentroid_predict'], 'rcf' : ['Ridge Classifier', 0.36, 'Max_Ridge_predict'], 'bnb':['Bernoulli Navies Bayes', 0.16, 'Max_BernoulliNB_predict'], 'lpc':['Label Propagation classifier', 0.05, 'Max_LabelPropagation_predict'] }
+		tag = cluster1[tag_name]
+		filename = 'Trend_kmeansUpdate_json_key_value.json'
+	else:
+		classifierAlgor = {'mlp': ['Multi-layer Perceptron Nerual Network Model (with 11 hidden layers)', 0.56, 'Max_MLP_predict'], 'gnb':['Gaussian Naive Bayes', 0.59, 'Max_GaussianNB_predict'], 'gbc':['Gradient Boosting Classifer', 0.61, 'Max_GradientBoosting_predict'], 'dtc':['Decision Tree Classifier', 0.70, 'Max_DecisionTree_predict'], 'rlm':['Regularized linear models with Stochastic Gradient Descent(SGD)', 0.46, 'Max_SGD_predict'], 'tca':['Two-Class AdaBoost boosting algorithm using AdaBoost-SAMME with decision trees', 0.65, 'Max_AdaBoost_predict'], 'lrs':['Logistic Regression', 0.50, 'Max_LogisticRegression_predict'], 'rfc': ['Random Forest Classifier - max depth = 15',0.50, 'Max_RandomForest_predict'], 'lsv':['Linear Support Vector Classifier', 0.53, 'Max_LSV_predict'], 'pac': ['Passive Aggressive Classifier', 0.53, 'Max_PassiveAggressive_predict'], 'knc': ['K-neighbors classifier', 0.42, 'Max_BaggingKN_predict'], 'etc': ['Extra-trees classifier', 0.36, 'Max_ExtraTree_predict'], 'bkn':['Bagging + k-neighbors classifier', 0.32, 'Max_BaggingKN_predict'], 'gpc':['Gaussian process classifier', 0.36, 'Max_GaussianProcess_predict'], 'ncc': ['Nearest centroid Classifier', 0.59, 'Max_NearestCentroid_predict'], 'rcf' : ['Ridge Classifier', 0.36, 'Max_Ridge_predict'], 'bnb':['Bernoulli Navies Bayes', 0.16, 'Max_BernoulliNB_predict'], 'lpc':['Label Propagation classifier', 0.05, 'Max_LabelPropagation_predict'] }
+		tag = cluster2[tag_name]
+		filename = 'Trend_pcaUpdate_json_key_value.json'
+
+
+	algo_name = classifierAlgor[algo][0]
+	algo_tpr = classifierAlgor[algo][1]
+
+	ht_rmse = 0
+	actual = ''
+	predicted = 999
+	clusterWords = []
+
+	with open(filename) as f:
+		lines = f.readlines()
+		for line in lines:
+			entry = json.loads(line)
+			#print(entry['Topic'])
+			#print(tag['cluster_words'])
+			if (entry['Topic'] == tag['cluster_words'] and entry['Time'] == tag['ts_start']):
+				clusterWords = entry['Topic']
+				actual = entry['Trend']
+				predicted = entry[classifierAlgor[algo][2]]
+				if (predicted == '1000'):
+					predicted = '1000 (used as training set)'
+				break
+
+
 	list_of_samples = get_list_of_clusters1()
 
-	tag = cluster1[tag_name]
+	
 	ht_name = tag['cluster_id']
 	ts_start = tag['ts_start']
 	tag_name = ht_name + '-' + ts_start

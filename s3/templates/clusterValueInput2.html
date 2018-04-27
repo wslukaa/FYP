@@ -18,9 +18,14 @@
     <li><a href="#"><span class="iconic magnifying-glass"></span> Prediction</a>
       <ul>
         <li><a href="/select">Hashtag Entries</a></li>
-        <li><a href="/valuePredict">Value Prediction (Advanced)</a></li>
-        <li><a href="/isTrendPredict">isTrend Prediction (Advanced)</a></li>
-        <li><a href="/clusterPredict">Cluster Prediction (Advanced)</a></li>
+        <li><a href="/valuePredict">Value Prediction</a></li>
+        <li><a href="/isTrendPredict">isTrend Prediction</a></li>
+      </ul>
+    </li>
+    <li><a href="#"><span class="iconic magnifying-glass"></span>Clustered Prediction</a>
+      <ul>
+        <li><a href="/clusterValueInput">Value Prediction</a></li>
+        <li><a href="/clusterIsTrendInput">isTrend Prediction</a></li>
       </ul>
     </li>
     <li><a href="#"><span class="iconic map-pin"></span> Cluster Visualization</a>
@@ -47,7 +52,14 @@
 
 
 
+
   <div align="center">
+    <p>Clustering Methodology: 
+    <select id="cluster">
+      <option value="c1">K-means cluster</option>
+      <option value="c2">SVD/LSA optimized K-means cluster</option>
+    </select>
+    </p>    
     <p>Hash Tag &nbsp
       <input id="ht_name" type="text" required>
       <font color="red"> (required) </font>
@@ -71,7 +83,7 @@
   <br>
   <script> 
     function searchHandler(){
-      window.location.href=  'http://127.0.0.1:5000/clusterValueInput/' + document.getElementById('algorithm').value + '_' +document.getElementById("ht_name").value
+      window.location.href = 'http://127.0.0.1:5000/clusterValueInput/' + document.getElementById("cluster").value + document.getElementById('algorithm').value + '_' +document.getElementById("ht_name").value
     }
   </script>
    
@@ -85,17 +97,18 @@
     function render_menu(){
     var list_of_samples = {{list_of_samples|tojson}};
     var text = "";
+    var algo = {{algo|tojson}}
+    var cluster = {{cluster|tojson}}
     
     //s += '<tr><a href="tag/{}">'.format(k) + '</a></tr>'
 
     for (var key in list_of_samples) {
       // check if the property/key is defined in the object itself, not in parent
       if (list_of_samples.hasOwnProperty(key)) {           
-          text += ' <a href="http://127.0.0.1:5000/clusterValuePredict/' + key + '">' + list_of_samples [key]['tag_name'] + '</a><br>'
+          text += ' <a href="http://127.0.0.1:5000/clusterValuePredict/' + cluster + algo + key + '">' + list_of_samples [key]['tag_name'] + '</a><br>'
       }
     }
     document.getElementById("menu").innerHTML = text;
-    
     }
     render_menu();
   </script>

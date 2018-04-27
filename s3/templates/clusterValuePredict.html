@@ -18,9 +18,14 @@
     <li><a href="#"><span class="iconic magnifying-glass"></span> Prediction</a>
       <ul>
         <li><a href="/select">Hashtag Entries</a></li>
-        <li><a href="/valuePredict">Value Prediction (Advanced)</a></li>
-        <li><a href="/isTrendPredict">isTrend Prediction (Advanced)</a></li>
-        <li><a href="/clusterPredict">Cluster Prediction (Advanced)</a></li>
+        <li><a href="/valuePredict">Value Prediction</a></li>
+        <li><a href="/isTrendPredict">isTrend Prediction</a></li>
+      </ul>
+    </li>
+    <li><a href="#"><span class="iconic magnifying-glass"></span>Clustered Prediction</a>
+      <ul>
+        <li><a href="/clusterValueInput">Value Prediction</a></li>
+        <li><a href="/clusterIsTrendInput">isTrend Prediction</a></li>
       </ul>
     </li>
     <li><a href="#"><span class="iconic map-pin"></span> Cluster Visualization</a>
@@ -85,9 +90,10 @@
   <br><br>
   <!--<h1>tag_name: {{tag_name}}</h1>-->
   <h2>Prediction Result</h2>
-  <h2>ht_name: {{ht_name}}</h2>
+  <h2>cluster_id: {{ht_name}}</h2>
+  <h2>cluster_words: {{clusterWords}}</h2>
   <h2>ts_start: {{ts_start}}</h2>
-  <h2>hashtag's average rmse: {{ht_rmse}} </h2>
+  <h2>cluster's average rmse: {{ht_rmse}} </h2>
   
   
 	<table class="rows">
@@ -176,9 +182,7 @@
 -->
 <script> var list_of_samples = {{list_of_samples|tojson}};</script>
 </body>
-<h2> some examples entries here</h2>
-<a href ="http://127.0.0.1:5000/valuePredict/gp_momlife-20171004-125800"> #momlife at 20171004-125800 using Gaussian Process Regression</a> <br>
-<a href ="http://127.0.0.1:5000/valuePredict/kn_bestboyband-20180112-153200"> #bestboyband at 20180112-153200 usnig KNN Regression </a>
+
 
 
 {% endblock %}
