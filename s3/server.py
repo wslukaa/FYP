@@ -40,6 +40,27 @@ def get_list_of_samples():
 		l[k]['isTrend'] = v['isTrend']
 	return l
 
+cluster1 = {}
+
+with open('clusterfyp_raw_plus_preprocessed_multiple_3.txt') as f:
+	for line in f:
+		tag = json.loads(line)
+		cluster_id = tag['cluster_id']
+		ts_start = tag['ts_start']
+		tag_name = cluster_id + '-' + ts_start
+		tag_name = re.sub('#','_',tag_name)
+		cluster1[tag_name] = tag
+		
+def get_list_of_clusters1():
+	l = {}
+	for k,v in cluster1.items():
+		tag_name = v['cluster_id'] + '-' + v['ts_start']
+		l[k] = {}
+		l[k]['tag_name'] = tag_name
+		l[k]['isTrend'] = v['isTrend']
+	return l
+
+
 def render_tag_list(tag_name):
 	list_of_samples = get_list_of_samples()
 
@@ -204,6 +225,121 @@ def render_trend(algo_tag_name):
 @app.route('/isTrendPredict')
 def render_tredDefault():
 	return render_trend('mlp_crypto-20180206-145600')
+
+@app.route('/clusterValuePredict/<tag_name>')
+def render_clusterValue(tag_name):
+	list_of_samples = get_list_of_clusters1()
+
+	tag = cluster1[tag_name]
+	ht_name = tag['cluster_id']
+	ts_start = tag['ts_start']
+	tag_name = ht_name + '-' + ts_start
+	isTrend = tag['isTrend']
+	df_raw = [['timestamp', 'value']]
+	df_nor = [['timestamp', 'value']]
+	df_em = [['timestamp', 'value']]
+	df_smoothed = [['timestamp', 'value']]
+
+	ts_full = tag['ts_full']
+	_df_raw = tag['df_raw']
+	_df_nor = tag['df_nor']
+	_df_em = tag['df_em']
+	_df_smoothed = tag['df_smoothed']
+
+	for i in range(0,len(ts_full)):
+		df_raw.append([ts_full[i],_df_raw[i]])
+		df_nor.append([ts_full[i],_df_nor[i]])
+		df_em.append([ts_full[i],_df_em[i]])
+		df_smoothed.append([ts_full[i],_df_smoothed[i]])
+
+	return render_template('clusterValuePredict.html',**locals())
+
+
+@app.route('/clusterValuePredict')
+def render_clusterValueDefault():
+	return render_clusterValue('_hiphoprapmusichiphopmusic-20180201-073200')
+
+@app.route('/clusterValueInput')
+def render_clusterValueMenu():
+	return render_template('clusterValueInput.html')
+
+@app.route('/clusterValueInput/<algo_hashtag>')
+def render_clusterValueMenu2(algo_hashtag):
+	algo = algo_hashtag[:2]
+	hashtag = ' ' + algo_hashtag[3:].strip()
+
+	
+	list_of_samples = {}
+
+	for k,v in cluster1.items():
+		print(v['cluster_words'])
+		if(hashtag in v['cluster_words']):
+			tag_name = v['cluster_id'] + '-' + v['ts_start']
+			list_of_samples[k] = {}
+			list_of_samples[k]['tag_name'] = tag_name
+			list_of_samples[k]['isTrend'] = v['isTrend']
+	print(hashtag)
+	print(list_of_samples)
+
+
+	return render_template('clusterValueInput2.html', **locals())
+
+
+@app.route('/clusterIsTrendInput')
+def render_clusterIsTrendMenu():
+	return render_template('clusterIsTrendInput.html')
+
+@app.route('/clusterIsTrendInput/<algo_hashtag>')
+def render_clusterIsTrendMenu2(algo_hashtag):
+	algo = algo_hashtag[:3]
+	hashtag = ' ' + algo_hashtag[4:].strip()
+
+
+	
+	list_of_samples = {}
+	for k,v in cluster1.items():
+		print(v['cluster_words'])
+		if(hashtag in v['cluster_words']):
+			tag_name = v['cluster_id'] + '-' + v['ts_start']
+			list_of_samples[k] = {}
+			list_of_samples[k]['tag_name'] = tag_name
+			list_of_samples[k]['isTrend'] = v['isTrend']
+	print(hashtag)
+	print(list_of_samples)
+
+
+	return render_template('clusterIsTrendInput2.html', **locals())
+
+
+@app.route('/clusterIsTrendPredict/<tag_name>')
+def render_clusterIsTrned(tag_name):
+	list_of_samples = get_list_of_clusters1()
+
+	tag = cluster1[tag_name]
+	ht_name = tag['cluster_id']
+	ts_start = tag['ts_start']
+	tag_name = ht_name + '-' + ts_start
+	isTrend = tag['isTrend']
+	df_raw = [['timestamp', 'value']]
+	df_nor = [['timestamp', 'value']]
+	df_em = [['timestamp', 'value']]
+	df_smoothed = [['timestamp', 'value']]
+
+	ts_full = tag['ts_full']
+	_df_raw = tag['df_raw']
+	_df_nor = tag['df_nor']
+	_df_em = tag['df_em']
+	_df_smoothed = tag['df_smoothed']
+
+	for i in range(0,len(ts_full)):
+		df_raw.append([ts_full[i],_df_raw[i]])
+		df_nor.append([ts_full[i],_df_nor[i]])
+		df_em.append([ts_full[i],_df_em[i]])
+		df_smoothed.append([ts_full[i],_df_smoothed[i]])
+
+	return render_template('clusterIsTrendPredict.html',**locals())
+
+
 
 
 @app.route("/")
