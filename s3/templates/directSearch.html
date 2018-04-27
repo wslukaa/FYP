@@ -18,9 +18,14 @@
     <li><a href="#"><span class="iconic magnifying-glass"></span> Prediction</a>
       <ul>
         <li><a href="/select">Hashtag Entries</a></li>
-        <li><a href="/valuePredict">Value Prediction (Advanced)</a></li>
-        <li><a href="/isTrendPredict">isTrend Prediction (Advanced)</a></li>
-        <li><a href="/clusterPredict">Cluster Prediction (Advanced)</a></li>
+        <li><a href="/valuePredict">Value Prediction</a></li>
+        <li><a href="/isTrendPredict">isTrend Prediction</a></li>
+      </ul>
+    </li>
+    <li><a href="#"><span class="iconic magnifying-glass"></span>Clustered Prediction</a>
+      <ul>
+        <li><a href="/clusterValueInput">Value Prediction</a></li>
+        <li><a href="/clusterIsTrendInput">isTrend Prediction</a></li>
       </ul>
     </li>
     <li><a href="#"><span class="iconic map-pin"></span> Cluster Visualization</a>
@@ -47,7 +52,7 @@
 
 
 
-
+<!--
   <div align="center">
     <p>Hash Tag &nbsp
       <input id="ht_name" type="text" required>
@@ -76,18 +81,10 @@
       window.location.href= 'tag/'+'_'+document.getElementById("ht_name").value + '-'+document.getElementById("ts_start").value
     }
   </script>
-
-  <script type ="text/javascript">
-    function getBinary() {
-      Math.round(Math.random())
-    }
-  </script>
-
+-->
  
   <div align="center">
-  <h2>Predicted Trend: <script>document.write(Math.round(Math.random()));</script></h2>
-  <h2>Kernel Ridge Regression's Average Root-Mean-Square Error: 4.45</h2>
-  
+
 
   <br><br>
   <h1>tag_name: {{tag_name}}</h1>
