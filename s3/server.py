@@ -485,6 +485,10 @@ def render_clusterIsTrned(algo_tag_name):
 @app.route("/")
 def index():
 	return render_template('summary2.html')
+
+@app.route("/htSummary")
+def htSummary():
+	return render_template('htSummary.html')
  
 """@app.route("/hello")
 def hello():
