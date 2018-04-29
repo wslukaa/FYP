@@ -49,7 +49,7 @@
 			}
 			]
 		},
-		{"name": "PCA K-Means Cluster",
+		{"name": "SVD/LSA optimized K-Means Cluster",
 		"children": [{
 			"name": "Kernel Ridge Regression: 0.666259963"
 			},
